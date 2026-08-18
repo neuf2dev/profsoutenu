@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <div class="mb-6">
+    <a href="{% url 'dashboard' %}" class="text-sm font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 mb-2">
+      &larr; Retour au tableau de bord
+    </a>
+    <h1 class="text-2xl font-extrabold text-slate-900">Générer une évaluation QCM</h1>
+    <p class="text-slate-500 text-sm mt-1">Conception instantanée par IA du sujet élève, du corrigé officiel et des pistes de remédiation.</p>
+  </div>
+
+  <form method="post" class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+    {% csrf_token %}
+
+    <div>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Titre de l'évaluation</label>
+      {{ form.titre }}
+      {% if form.titre.errors %}<p class="text-xs text-red-600 mt-1">{{ form.titre.errors.0 }}</p>{% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Niveau</label>
+        {{ form.niveau }}
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Matière</label>
+        {{ form.matiere }}
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Notions ciblées & Mots-clés</label>
+      {{ form.notions_cles }}
+      <p class="text-xs text-slate-400 mt-1">Précisez les compétences précises à évaluer pour calibrer les distracteurs.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Niveau de difficulté</label>
+        {{ form.difficulte }}
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Nombre de questions</label>
+        {{ form.nb_questions }}
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+      <a href="{% url 'dashboard' %}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Annuler</a>
+      <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition flex items-center gap-2">
+        <span>Générer par IA</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

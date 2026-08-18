@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+
+  <!-- Entête avec métadonnées et actions d'export -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+    <div>
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-xs font-semibold px-2.5 py-0.5 bg-blue-50 text-blue-700 rounded-md">{{ qcm.get_niveau_display }}</span>
+        <span class="text-xs font-semibold px-2.5 py-0.5 bg-slate-100 text-slate-700 rounded-md">{{ qcm.get_matiere_display }}</span>
+        <span class="text-xs font-semibold px-2.5 py-0.5 bg-emerald-50 text-emerald-700 rounded-md">{{ qcm.get_difficulte_display }}</span>
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-900">{{ qcm.titre }}</h1>
+      <p class="text-xs text-slate-500 mt-1">Notions : <span class="font-medium text-slate-700">{{ qcm.notions_cles }}</span> • {{ qcm.nb_questions }} questions</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <a href="{% url 'exporter_pdf_qcm' qcm.pk 'eleve' %}" target="_blank" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        PDF Sujet Élève
+      </a>
+      <a href="{% url 'exporter_pdf_qcm' qcm.pk 'corrige' %}" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        PDF Corrigé Complet
+      </a>
+    </div>
+  </div>
+
+  <!-- Conteneur avec système d'onglets simples -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" x-data="{ tab: 'eleve' }">
+    <div class="flex border-b border-slate-200 bg-slate-50 px-4 pt-3 gap-2">
+      <button @click="tab = 'eleve'" :class="tab === 'eleve' ? 'border-blue-600 text-blue-600 bg-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700'" class="px-4 py-2.5 text-xs border-b-2 rounded-t-lg transition">
+        Sujet Élève (Sans réponses)
+      </button>
+      <button @click="tab = 'corrige'" :class="tab === 'corrige' ? 'border-blue-600 text-blue-600 bg-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700'" class="px-4 py-2.5 text-xs border-b-2 rounded-t-lg transition">
+        Corrigé & Barème Enseignant
+      </button>
+      <button @click="tab = 'remediation'" :class="tab === 'remediation' ? 'border-blue-600 text-blue-600 bg-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700'" class="px-4 py-2.5 text-xs border-b-2 rounded-t-lg transition">
+        Remédiation & Différenciation
+      </button>
+    </div>
+
+    <div class="p-6 md:p-8">
+      <div x-show="tab === 'eleve'" class="space-y-4">
+        <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider">Évaluation formative (Format distribution)</h2>
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-mono text-sm text-slate-800 whitespace-pre-line leading-relaxed">
+          {{ qcm.contenu_eleve }}
+        </div>
+      </div>
+
+      <div x-show="tab === 'corrige'" class="space-y-4" style="display: none;">
+        <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider">Corrigé officiel & Barème indicatif</h2>
+        <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-100 font-mono text-sm text-slate-800 whitespace-pre-line leading-relaxed">
+          {{ qcm.contenu_corrige }}
+        </div>
+      </div>
+
+      <div x-show="tab === 'remediation'" class="space-y-4" style="display: none;">
+        <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider">Pistes pédagogiques & Erreurs prévisibles</h2>
+        <div class="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 font-mono text-sm text-slate-800 whitespace-pre-line leading-relaxed">
+          {{ qcm.pistes_remediation }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between text-xs text-slate-400 pt-2">
+    <a href="{% url 'dashboard' %}" class="hover:text-slate-600 font-medium">&larr; Revenir au tableau de bord</a>
+    <a href="{% url 'supprimer_qcm' qcm.pk %}" class="text-red-500 hover:text-red-700 font-medium">Supprimer cette évaluation</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'preparations/base.html' %}
+
+{% block title %}{{ fiche.titre }} - ProfSoutenu{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Barre d'actions (masquée à l'impression) -->
+    <div class="flex items-center justify-between mb-6 no-print">
+        <a href="{% url 'liste_fiches' %}" class="text-sm font-medium text-slate-500 hover:text-slate-800 transition">
+            ← Retour aux préparations
+        </a>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'modifier_fiche' fiche.pk %}" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl transition text-sm">
+                <span>✏️</span> Modifier
+            </a>
+            <button onclick="window.print()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow transition cursor-pointer text-sm">
+                <span>🖨️</span> Imprimer / Enregistrer en PDF
+            </button>
+            <form method="post" action="{% url 'supprimer_fiche' fiche.pk %}" onsubmit="return confirm('Es-tu sûr de vouloir supprimer définitivement cette fiche pédagogique ?');" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="inline-flex items-center justify-center bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold py-2.5 px-3 rounded-xl transition text-sm border border-rose-200 cursor-pointer" title="Supprimer la fiche">
+                    <span>🗑️</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contenu de la fiche pédagogique -->
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 fiche-container">
+        <!-- En-tête -->
+        <div class="border-b border-slate-100 pb-6 mb-6">
+            <div class="flex items-center justify-between mb-2">
+                <span class="inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700">
+                    {{ fiche.get_niveau_display }} • {{ fiche.get_matiere_display }}
+                </span>
+                <span class="text-sm font-bold text-slate-500">⏱ {{ fiche.duree_minutes }} min</span>
+            </div>
+            <h1 class="text-3xl font-extrabold text-slate-900 mt-2">{{ fiche.titre }}</h1>
+            {% if fiche.theme %}
+                <p class="text-slate-500 text-sm mt-1"><strong>Thème :</strong> {{ fiche.theme }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Section 1 : Objectifs -->
+        <div class="mb-8">
+            <h2 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <span>🎯</span> Objectifs pédagogiques & Compétences visées
+            </h2>
+            <div class="bg-indigo-50/50 p-5 rounded-xl text-slate-700 leading-relaxed whitespace-pre-wrap text-sm border border-indigo-100">
+                {{ fiche.objectifs }}
+            </div>
+        </div>
+
+        <!-- Section 2 : Déroulé en 5 phases -->
+        <div class="mb-8">
+            <h2 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <span>📋</span> Déroulé de la séance (5 phases)
+            </h2>
+            <div class="bg-slate-50 p-5 rounded-xl text-slate-700 leading-relaxed whitespace-pre-wrap text-sm border border-slate-200">
+                {{ fiche.deroule_seance }}
+            </div>
+        </div>
+
+        <!-- Section 3 : Exercices & Évaluation -->
+        <div>
+            <h2 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <span>✍️</span> Exercices types & Évaluation
+            </h2>
+            <div class="bg-emerald-50/50 p-5 rounded-xl text-slate-700 leading-relaxed whitespace-pre-wrap text-sm border border-emerald-100">
+                {{ fiche.exercices_types }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    header, nav, footer, .no-print {
+        display: none !important;
+    }
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 10.5pt;
+    }
+    .fiche-container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    @page {
+        size: A4;
+        margin: 1.5cm;
+    }
+}
+</style>
+{% endblock %}

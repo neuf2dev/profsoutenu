@@ -1,0 +1,68 @@
+{% extends 'preparations/base.html' %}
+
+{% block title %}Créer une fiche - ProfSoutenu{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+    <div class="mb-6 text-center">
+        <h2 class="text-2xl font-bold text-slate-800">Préparer une nouvelle séance 📝</h2>
+        <p class="text-slate-500 text-sm mt-1">Remplis ces quelques éléments et laisse la magie opérer en quelques secondes.</p>
+    </div>
+
+    <form method="post" class="space-y-5" onsubmit="document.getElementById('btn-submit').classList.add('opacity-50', 'cursor-wait'); document.getElementById('btn-submit').innerText = 'Création de la fiche en cours... ⏳';">
+        {% csrf_token %}
+
+        <!-- Titre -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Titre de la séance</label>
+            <input type="text" name="titre" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-slate-800" placeholder="Ex: Découvrir les fractions simples">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Niveau -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Niveau</label>
+                <select name="niveau" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-slate-800">
+                    <option value="CP">CP</option>
+                    <option value="CE1">CE1</option>
+                    <option value="CE2">CE2</option>
+                    <option value="CM1" selected>CM1</option>
+                    <option value="CM2">CM2</option>
+                    <option value="AUTRE">Autre</option>
+                </select>
+            </div>
+
+            <!-- Matière -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Matière</label>
+                <select name="matiere" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-slate-800">
+                    <option value="FR">Français</option>
+                    <option value="MATHS" selected>Mathématiques</option>
+                    <option value="HIST_GEO">Histoire - Géo</option>
+                    <option value="SCIENCES">Sciences</option>
+                    <option value="EPS">EPS</option>
+                    <option value="ARTS">Arts</option>
+                    <option value="ANGLAIS">Anglais</option>
+                </select>
+            </div>
+
+            <!-- Durée -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Durée (minutes)</label>
+                <input type="number" name="duree_minutes" value="45" min="15" max="180" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-slate-800">
+            </div>
+        </div>
+
+        <!-- Thème / Objectif clé -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Thème ou précision pédagogique</label>
+            <input type="text" name="theme" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-slate-800" placeholder="Ex: Partage équitable, demi et quart, manipulation d'objets">
+        </div>
+
+        <!-- Bouton Générer -->
+        <button id="btn-submit" type="submit" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl transition duration-150 shadow-md text-base flex justify-center items-center gap-2">
+            ✨ Générer la fiche complète
+        </button>
+    </form>
+</div>
+{% endblock %}
