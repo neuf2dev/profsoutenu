@@ -59,7 +59,7 @@ Réponds STRICTEMENT au format JSON valide avec ces 3 clés :
     try:
         client = get_genai_client()
         response = client.models.generate_content(
-            model='gemini-3.6-flash',
+            model='gemini-2.5-flash',
             contents=prompt,
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
