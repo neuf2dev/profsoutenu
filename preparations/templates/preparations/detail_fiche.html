@@ -6,11 +6,11 @@
 <div class="max-w-4xl mx-auto">
     <!-- Barre d'actions (masquée à l'impression) -->
     <div class="flex items-center justify-between mb-6 no-print">
-        <a href="{% url 'liste_fiches' %}" class="text-sm font-medium text-slate-500 hover:text-slate-800 transition">
+        <a href="{% url 'dashboard' %}" class="text-sm font-medium text-slate-500 hover:text-slate-800 transition">
             ← Retour aux préparations
         </a>
         <div class="flex items-center gap-3">
-            <a href="{% url 'modifier_fiche' fiche.pk %}" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl transition text-sm">
+            <a href="{% url 'editer_fiche' fiche.pk %}" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl transition text-sm">
                 <span>✏️</span> Modifier
             </a>
             <button onclick="window.print()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow transition cursor-pointer text-sm">
