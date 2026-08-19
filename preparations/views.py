@@ -27,7 +27,7 @@ def inscription_view(request):
             return redirect('dashboard')
     else:
         form = InscriptionForm()
-    return render(request, 'registration/inscription.html', {'form': form})
+    return render(request, 'preparations/inscription.html', {'form': form})
 
 
 @login_required
